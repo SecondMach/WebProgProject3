@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Santa’s Workshop</title>
+    <link rel="stylesheet" href="css/homepage.css">
+</head>
+<body>
+    <img src="assets/images/bg.jpg" class="bg">
+
+    <div class="snow"></div>
+
+    <h1 class="title">🎅 Santa’s Workshop 🎄</h1>
+
+    <div class="tree-container">
+        <img src="assets/images/tree.png" class="tree">
+
+        <!-- ⭐ STAR PLAY BUTTON -->
+        <div class="nav-item star-item" onclick="openPlay()">
+            <img src="assets/images/star.png" class="star">
+            <span class="nav-label">Play</span>
+        </div>
+
+        <!-- 🎄 CHRISTMAS LIGHT BUTTONS -->
+        <!-- AUTH BUTTON (Login / Profile) -->
+        <div class="nav-item light-item light1" id="authBtn">
+            <img src="assets/images/light3.png">
+            <span class="nav-label" id="authLabel">Login</span>
+        </div>
+
+        <div class="nav-item light-item light2" onclick="location.href='rewards.html'">
+            <img src="assets/images/light1.png">
+            <span class="nav-label">Rewards</span>
+        </div>
+
+        <div class="nav-item light-item light3" onclick="location.href='story.html'">
+            <img src="assets/images/light2.png">
+            <span class="nav-label">Story Mode</span>
+        </div>
+
+        <div class="nav-item light-item light4" onclick="location.href='leaderboard.html'">
+            <img src="assets/images/light4.png">
+            <span class="nav-label">Top Players</span>
+        </div>
+    </div>
+
+    <div id="sizePopup" class="popup hidden">
+        <h2>Select Puzzle Size</h2>
+        <button onclick="startGame(3)">3 × 3</button>
+        <button onclick="startGame(4)">4 × 4</button>
+        <button onclick="startGame(5)">5 × 5</button>
+        <button onclick="startGame(6)">6 × 6</button>
+        <button onclick="startGame(8)">8 × 8</button>
+        <button onclick="startGame(10)">10 × 10</button>
+        <button class="closeBtn" onclick="closePlay()">Cancel</button>
+    </div>
+
+    <div id="resumePopup" class="popup hidden">
+        <h2>Resume Previous Game?</h2>
+        <button onclick="resumeGame()">Resume</button>
+        <button onclick="discardGame()">New Game</button>
+    </div>
+
+    <audio id="bells" loop>
+        <source src="assets/audio/jinglebells.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="js/main.js"></script>
+
+</body>
+</html>

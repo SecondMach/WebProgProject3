@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Leaderboard</title>
+    <link rel="stylesheet" href="css/leaderboard.css">
+</head>
+<body>
+    <img src="assets/images/bg.jpg" class="bg">
+
+    <div class="snow"></div>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="index.html">Home</a>
+        </div>
+        <div class="nav-right">
+            <button id="navProfileBtn"></button>
+        </div>
+    </nav>
+
+    <div class="leaderboard-container">
+        <h1 class="title">🏆 Leaderboard</h1>
+        <table id="board">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Player</th>
+                    <th>Games</th>
+                    <th>Wins</th>
+                    <th>Best Time (s)</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+    <audio id="gameMusic" autoplay loop>
+        <source src="assets/audio/gameplay.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="js/leaderboard.js"></script>
+
+</body>
+</html>

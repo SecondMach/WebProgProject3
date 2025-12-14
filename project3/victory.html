@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Santa’s Workshop — Victory!</title>
+
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/victory.css">
+</head>
+
+<body>
+    <img src="assets/images/bg.jpg" class="bg">
+
+    <div class="snow"></div>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="index.html">Home</a>
+        </div>
+        <div class="nav-right">
+            <button id="navProfileBtn"></button>
+        </div>
+    </nav>
+
+    <div class="victory-container">
+        <h1 class="victory-title">🎉 You Did It! 🎄</h1>
+
+        <!-- Sleigh Animation -->
+        <div class="sleigh-container">
+            <img src="assets/images/sleigh.png" class="sleigh" alt="Santa Sleigh">
+            <div id="sparkles"></div>
+        </div>
+
+        <!-- Stats revealed AFTER sleigh slides -->
+        <div id="stats" class="stats hidden">
+            <p><b>Puzzle Size:</b> <span id="vSize"></span></p>
+            <p><b>Total Moves:</b> <span id="vMoves"></span></p>
+            <p><b>Time Taken:</b> <span id="vTime"></span></p>
+
+            <div class="buttons">
+                <button onclick="replay()">🔁 Replay</button>
+
+                <!-- Story mode only -->
+                <button id="nextBtn" class="hidden" onclick="nextLevel()">➡️ Next Level</button>
+
+                <!-- Regular mode only -->
+                <button id="newGameBtn" class="hidden" onclick="newGame()">🎮 New Game</button>
+
+                <button onclick="goHome()">🏠 Home</button>
+            </div>
+        </div>
+    </div>
+
+    <audio id="victoryMusic" autoplay>
+        <source src="assets/audio/victory.wav" type="audio/wav">
+    </audio>
+
+    <script src="js/victory.js"></script>
+</body>
+</html>

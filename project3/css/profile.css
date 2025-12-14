@@ -1,0 +1,48 @@
+.bg {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    filter: brightness(0.8);
+}
+
+/* Snow brighter */
+.snow {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: url("../assets/images/snow.gif") repeat;
+    opacity: 0.6; /* brighter */
+    z-index: 1;
+}
+
+body {
+    margin: 0;
+    background: linear-gradient(#0d1b2a, #1b263b);
+    font-family: 'Poppins';
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.profile-card {
+    width: 350px;
+    padding: 30px;
+    background: rgba(0,0,0,0.35);
+    border-radius: 20px;
+    backdrop-filter: blur(6px);
+    text-align: center;
+    border: 3px solid rgba(255,255,255,0.25);
+    box-shadow: 0 0 30px rgba(255,255,255,0.15);
+    z-index: 55;
+}
+
+.avatar {
+    width: 120px;
+    border-radius: 50%;
+    margin-bottom: 15px;
+}

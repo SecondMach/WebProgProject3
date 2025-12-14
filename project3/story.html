@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Story Mode</title>
+
+    <link rel="stylesheet" href="css/story.css">
+</head>
+<body>
+    <img src="assets/images/bg.jpg" class="bg">
+
+    <div class="snow"></div>
+
+    <nav class="navbar">
+        <div class="nav-left">
+            <a href="index.html">Home</a>
+        </div>
+        <div class="nav-right">
+            <button id="navProfileBtn"></button>
+        </div>
+    </nav>
+
+    <h1 class="title">🎄 Story Mode</h1>
+
+    <div class="map-container">
+        <div class="map">
+            <div class="level unlocked" data-level="1" data-size="3">1</div>
+            <div class="level unlocked" data-level="2" data-size="4">2</div>
+            <div class="level locked" data-level="3" data-size="5">3</div>
+            <div class="level locked" data-level="4" data-size="6">4</div>
+            <div class="level locked" data-level="5" data-size="8">5</div>
+            <div class="level locked" data-level="6" data-size="10">6</div>
+
+            <!-- Candy Crush style decorations -->
+            <img src="assets/images/bell.png" class="decor decor1">
+            <img src="assets/images/star.png" class="decor decor2">
+            <img src="assets/images/candy.png" class="decor decor3">
+        </div>
+    </div>
+
+    <audio id="gameMusic" autoplay loop>
+        <source src="assets/audio/gameplay.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="js/story.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,77 @@
+body {
+    margin: 0;
+    background: #0d1b2a;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.bg {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+    filter: brightness(0.8);
+}
+
+/* Snow brighter */
+.snow {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background: url("../assets/images/snow.gif") repeat;
+    opacity: 0.6; /* brighter */
+    z-index: 1;
+}
+
+.login-box {
+    position: relative;
+    z-index: 5;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(6px);
+    padding: 40px;
+    border-radius: 12px;
+    width: 320px;
+    text-align: center;
+    color: white;
+    box-shadow: 0 0 20px #0005;
+}
+
+.login-box input {
+    width: 90%;
+    padding: 12px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+}
+
+.login-box button {
+    width: 95%;
+    padding: 12px;
+    background: crimson;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.login-box button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px red;
+}
+
+.small {
+    font-size: 14px;
+}
+
+.error {
+    margin-top: 10px;
+    color: #ff8080;
+}

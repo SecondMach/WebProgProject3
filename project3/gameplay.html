@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Santa’s Workshop — Puzzle</title>
+
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/gameplay.css">
+</head>
+
+<body>
+    <img src="assets/images/bg.jpg" class="bg">
+
+    <div class="snow"></div>
+
+    <header class="game-header">
+        <h1>🎄 Puzzle Mode</h1>
+
+        <div class="stats">
+            <span>Moves: <b id="movesCount">0</b></span>
+            <span>Time: <b id="timer">00:00</b></span>
+            <button id="hintBtn">Hint</button>
+            <label for="imageUpload" class="upload-btn">
+                Upload Image
+            </label>
+            <input type="file" id="imageUpload" accept="image/*" hidden>
+            <a href="index.html" class="homebtn">Home</a>
+            <button id="navProfileBtn"></button>
+        </div>
+    </header>
+
+    <main>
+        <div id="puzzleBoard" class="board"></div>
+    </main>
+
+    <audio id="gameMusic" loop>
+        <source src="assets/audio/gameplay.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="js/gameplay.js"></script>
+</body>
+</html>

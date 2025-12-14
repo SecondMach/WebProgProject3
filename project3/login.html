@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Santa’s Workshop — Login</title>
+
+    <link rel="stylesheet" href="css/login.css">
+</head>
+<body>
+
+    <img src="assets/images/bg.jpg" class="bg">
+
+    <div class="snow"></div>
+
+    <div class="login-box">
+        <h1>🎅 Welcome Back!</h1>
+
+        <input id="username" type="text" placeholder="Username">
+        <input id="password" type="password" placeholder="Password">
+
+        <button onclick="login()">Login</button>
+
+        <p class="small">
+            Don't have an account?
+            <a href="register.html">Create one</a>
+        </p>
+
+        <p id="error" class="error"></p>
+    </div>
+
+    <audio id="gameMusic" autoplay loop>
+        <source src="assets/audio/gameplay.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="js/login.js"></script>
+
+</body>
+</html>

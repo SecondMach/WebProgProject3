@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Your Profile</title>
+
+    <link rel="stylesheet" href="css/profile.css">
+</head>
+<body>
+    <img src="assets/images/bg.jpg" class="bg">
+
+    <div class="snow"></div>
+
+    <div class="profile-card">
+        <img src="assets/images/profile.png" class="avatar">
+
+        <h2 id="displayName"></h2>
+        <p id="username"></p>
+
+        <hr>
+
+        <p>Total Games: <b id="games"></b></p>
+        <p>Wins: <b id="wins"></b></p>
+        <p>Average Moves: <b id="avgMoves"></b></p>
+
+        <button onclick="logout()" class="btn">Logout</button>
+        <button onclick="location.href='index.html'" class="btn btn-secondary">Home</button>
+    </div>
+
+    <audio id="gameMusic" autoplay loop>
+        <source src="assets/audio/gameplay.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="js/profile.js"></script>
+
+</body>
+</html>

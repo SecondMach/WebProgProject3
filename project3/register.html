@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create Account — Santa’s Workshop</title>
+
+    <link rel="stylesheet" href="css/register.css">
+</head>
+<body>
+
+    <img src="assets/images/bg.jpg" class="bg">
+
+    <div class="snow"></div>
+
+    <div class="register-box">
+        <h1>🎅 Create Your Account</h1>
+
+        <input id="username" type="text" placeholder="Username">
+        <input id="displayName" type="text" placeholder="Display Name">
+        <input id="password" type="password" placeholder="Password">
+        <input id="confirmPassword" type="password" placeholder="Confirm Password">
+
+        <button onclick="register()">Create Account</button>
+
+        <p class="link">
+            Already have an account? <a href="login.html">Log in</a>
+        </p>
+
+        <p id="error" class="error"></p>
+    </div>
+
+    <audio id="gameMusic" autoplay loop>
+        <source src="assets/audio/gameplay.mp3" type="audio/mpeg">
+    </audio>
+
+    <script src="js/register.js"></script>
+
+</body>
+</html>
