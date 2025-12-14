@@ -13,7 +13,6 @@ const movesCount = document.getElementById("movesCount");
 const timerDisplay = document.getElementById("timer");
 
 let difficultyLevel = parseInt(localStorage.getItem("difficulty")) || 1;
-
 let hintsLeft = Math.max(1, 5 - difficultyLevel);
 
 const TILE_SIZE = 100;
@@ -24,9 +23,11 @@ const BUILT_IN_IMAGES = [
     "assets/images/snowman.jpg",
     "assets/images/treepuzzle.jpg",
     "assets/images/gingerbread.avif"
-]
+];
 
 let imageObj = new Image();
+
+/* ================= INIT ================= */
 
 init();
 
@@ -39,7 +40,6 @@ function init() {
     if (paused) {
         const state = JSON.parse(paused);
 
-        // restore everything
         size = state.size;
         board = state.board;
         moves = state.moves;
@@ -57,6 +57,15 @@ function init() {
         pickrandomImage();
     }
 }
+
+/* ================= LOGIN CHECK ================= */
+
+function isUserLoggedIn() {
+    const userId = localStorage.getItem("user_id");
+    return userId && userId !== "null" && userId !== "undefined";
+}
+
+/* ================= IMAGE ================= */
 
 function pickrandomImage() {
     let img = BUILT_IN_IMAGES[Math.floor(Math.random() * BUILT_IN_IMAGES.length)];
@@ -84,22 +93,19 @@ if (uploadInput) {
     });
 }
 
+/* ================= BOARD ================= */
+
 function generateBoard() {
     board = [];
-
-    // fill 1..(size*size - 1)
     for (let i = 1; i < size * size; i++) board.push(i);
     board.push(0);
 
-    // strategic shuffling: simulate real moves
     let shuffleMoves = size * size * 6;
-
     for (let i = 0; i < shuffleMoves; i++) {
-        let emptyIndex = board.indexOf(0);
-        let movable = getMovableIndexes(emptyIndex);
+        let empty = board.indexOf(0);
+        let movable = getMovableIndexes(empty);
         let rand = movable[Math.floor(Math.random() * movable.length)];
-
-        [board[emptyIndex], board[rand]] = [board[rand], board[emptyIndex]];
+        [board[empty], board[rand]] = [board[rand], board[empty]];
     }
 }
 
@@ -114,35 +120,6 @@ function getMovableIndexes(empty) {
     if (row < size - 1) moves.push(empty + size);
 
     return moves;
-}
-
-function shuffle(arr) {
-    for (let i = arr.length - 1; i > 0; i--) {
-        let j = Math.floor(Math.random() * (i + 1));
-        [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-}
-
-function isSolvable(arr) {
-    let inversions = 0;
-
-    for (let i = 0; i < arr.length; i++) {
-        for (let j = i + 1; j < arr.length; j++) {
-            if (arr[i] > 0 && arr[j] > 0 && arr[i] > arr[j]) {
-                inversions++;
-            }
-        }
-    }
-
-    // odd grid (3x3, 5x5): solvable if inversions even
-    if (size % 2 !== 0) return inversions % 2 === 0;
-
-    // even grid (4x4):
-    const emptyRow = Math.floor(arr.indexOf(0) / size);
-
-    // if blank is on even row from bottom (0-based)
-    if ((size - emptyRow) % 2 === 0) return inversions % 2 !== 0;
-    else return inversions % 2 === 0;
 }
 
 function drawBoard() {
@@ -163,7 +140,7 @@ function drawBoard() {
             tile.style.backgroundSize = `${size * TILE_SIZE}px ${size * TILE_SIZE}px`;
             tile.style.backgroundPosition =
                 `-${imgCol * TILE_SIZE}px -${imgRow * TILE_SIZE}px`;
-            
+
             const number = document.createElement("span");
             number.className = "tile-number";
             number.textContent = value;
@@ -180,19 +157,18 @@ function drawBoard() {
     });
 }
 
+/* ================= MOVES ================= */
+
 function tryMove(index) {
     let emptyIndex = board.indexOf(0);
-    
     if (!isMovable(index, emptyIndex)) return;
 
-    // swap
     [board[index], board[emptyIndex]] = [board[emptyIndex], board[index]];
 
     moves++;
     movesCount.textContent = moves;
 
     updateMusicIntensity();
-
     drawBoard();
     checkWin();
 }
@@ -207,14 +183,23 @@ function isMovable(i, empty) {
            (i === empty + size);
 }
 
+/* ================= TIMER ================= */
+
 function startTimer() {
+    clearInterval(timerInterval);
     timerInterval = setInterval(() => {
         timer++;
-        let m = String(Math.floor(timer / 60)).padStart(2, "0");
-        let s = String(timer % 60).padStart(2, "0");
-        timerDisplay.textContent = `${m}:${s}`;
+        timerDisplay.textContent = formatTime(timer);
     }, 1000);
 }
+
+function formatTime(t) {
+    let m = String(Math.floor(t / 60)).padStart(2, "0");
+    let s = String(t % 60).padStart(2, "0");
+    return `${m}:${s}`;
+}
+
+/* ================= WIN ================= */
 
 function checkWin() {
     for (let i = 0; i < board.length - 1; i++) {
@@ -222,7 +207,6 @@ function checkWin() {
     }
 
     clearInterval(timerInterval);
-
     adjustDifficulty();
 
     music.pause();
@@ -232,7 +216,11 @@ function checkWin() {
     localStorage.setItem("time", timer);
     localStorage.setItem("difficulty", difficultyLevel);
 
-    saveWinSession();
+    // ✅ ONLY save if logged in
+    if (isUserLoggedIn()) {
+        saveWinSession();
+    }
+
     window.location.href = "victory.html";
 }
 
@@ -247,70 +235,81 @@ function adjustDifficulty() {
     }
 }
 
-document.getElementById("hintBtn").onclick = () => {
-    if (hintsLeft <= 0) return;
+/* ================= SMART HINT (AUTO MOVE) ================= */
 
-    hintsLeft--;
-    showHint();
-};
+function cloneBoard(arr) {
+    return arr.slice();
+}
+
+function countWrongTiles(arr) {
+    let wrong = 0;
+    for (let i = 0; i < arr.length - 1; i++) {
+        if (arr[i] !== i + 1) wrong++;
+    }
+    return wrong;
+}
 
 function showHint() {
     let empty = board.indexOf(0);
     let movable = getMovableIndexes(empty);
 
-    movable.forEach(i => {
-        boardDiv.children[i].classList.add("hint");
-        setTimeout(() => {
-            boardDiv.children[i].classList.remove("hint");
-        }, 1500);
-    });
+    let bestMove = null;
+    let bestScore = Infinity;
+
+    for (let i of movable) {
+        let testBoard = cloneBoard(board);
+        [testBoard[i], testBoard[empty]] = [testBoard[empty], testBoard[i]];
+
+        let score = countWrongTiles(testBoard);
+        if (score < bestScore) {
+            bestScore = score;
+            bestMove = i;
+        }
+    }
+
+    if (bestMove === null) {
+        bestMove = movable[Math.floor(Math.random() * movable.length)];
+    }
+
+    const tileEl = boardDiv.children[bestMove];
+    tileEl.classList.add("hint");
+
+    setTimeout(() => {
+        tileEl.classList.remove("hint");
+        [board[bestMove], board[empty]] = [board[empty], board[bestMove]];
+        drawBoard();
+        checkWin();
+    }, 300);
 }
 
-let user_id = localStorage.getItem("user_id");
+document.getElementById("hintBtn").onclick = () => {
+    if (hintsLeft <= 0) return;
+    hintsLeft--;
+    showHint();
+};
 
-function saveWinSession() {
-    let form = new FormData();
-    form.append("user_id", localStorage.getItem("user_id"));
-    form.append("moves", moves);
-    form.append("time", timer);
-    form.append("size", size);
-    form.append("success", 1);
-    form.append("difficulty", difficultyLevel);
-
-    fetch("backend/save_session.php", {
-        method: "POST",
-        body: form
-    });
-}
+/* ================= MUSIC ================= */
 
 const music = document.getElementById("gameMusic");
 let musicStarted = false;
 
 function startGameMusic() {
     if (musicStarted) return;
-
     music.volume = 0.3;
     music.playbackRate = 1.0;
-
     music.play().catch(() => {});
     musicStarted = true;
 }
 
-// Start music after first interaction
 document.addEventListener("click", startGameMusic, { once: true });
 document.addEventListener("keydown", startGameMusic, { once: true });
 
 function updateMusicIntensity() {
     if (!musicStarted) return;
 
-    // Gradual intensity
     let intensity = Math.min(1, (moves + timer / 2) / (size * size * 3));
-
-    // Volume scaling
-    music.volume = 0.3 + intensity * 0.4;   // 0.3 → 0.7
-
-    // Speed scaling (subtle)
-    music.playbackRate = 1 + intensity * 0.15; // 1.0 → 1.15
+    music.volume = 0.3 + intensity * 0.4;
+    music.playbackRate = 1 + intensity * 0.15;
 
     if (tilesOutOfPlace() <= 3) {
         music.volume = 0.85;
@@ -326,14 +325,33 @@ function tilesOutOfPlace() {
     return wrong;
 }
 
+/* ================= SAVE ================= */
+
+function saveWinSession() {
+    const userId = localStorage.getItem("user_id");
+    if (!userId) return;
+
+    let form = new FormData();
+    form.append("user_id", userId);
+    form.append("moves", moves);
+    form.append("time", timer);
+    form.append("size", size);
+    form.append("success", 1);
+    form.append("difficulty", difficultyLevel);
+
+    fetch("backend/save_session.php", {
+        method: "POST",
+        body: form
+    });
+}
+
 function saveGameState() {
     const state = {
         board,
         moves,
         time: timer,
         size,
-        image: imageObj.src,
-        storyLevel: localStorage.getItem("story_level") || null
+        image: imageObj.src
     };
     localStorage.setItem("pausedGame", JSON.stringify(state));
 }
@@ -343,23 +361,7 @@ window.addEventListener("beforeunload", () => {
     clearInterval(timerInterval);
 });
 
-window.onload = () => {
-    const pausedBoard = localStorage.getItem("pausedBoard");
-    if (pausedBoard) {
-        if (confirm("Resume previous game?")) {
-            board = JSON.parse(pausedBoard);
-            moves = parseInt(localStorage.getItem("pausedMoves")) || 0;
-            timer = parseInt(localStorage.getItem("pausedTime")) || 0;
-            drawBoard();
-            movesCount.textContent = moves;
-            startTimer();
-        } else {
-            localStorage.removeItem("pausedBoard");
-            localStorage.removeItem("pausedMoves");
-            localStorage.removeItem("pausedTime");
-        }
-    }
-};
+/* ================= PROFILE BUTTON ================= */
 
 const profileBtn = document.getElementById("navProfileBtn");
 const userId = localStorage.getItem("user_id");
