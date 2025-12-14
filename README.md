@@ -21,9 +21,9 @@ An immersive, festive sliding-puzzle game built with HTML, CSS, JavaScript, PHP,
 
 🎮 Adaptive Gameplay Experience
   - Intelligent difficulty scaling based on:
-      --Completion time
-      --Number of moves
-      --Player performance history
+    --Completion time
+    --Number of moves
+    --Player performance history
   - Difficulty affects:
       --Shuffle complexity
       --Available hints
